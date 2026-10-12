@@ -1,7 +1,0 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
-  <defs><radialGradient id="g" cx="35%" cy="30%" r="80%"><stop offset="0" stop-color="#ecc569"/><stop offset="1" stop-color="#b98d32"/></radialGradient></defs>
-  <rect width="512" height="512" fill="#0b0c11"/>
-  <circle cx="256" cy="256" r="196" fill="url(#g)"/>
-  <circle cx="256" cy="256" r="190" fill="none" stroke="#fff" stroke-opacity=".25" stroke-width="6"/>
-  <text x="256" y="300" text-anchor="middle" font-family="Orbitron, 'Arial Black', sans-serif" font-size="150" font-weight="900" fill="#15171f">VOL</text>
-</svg>

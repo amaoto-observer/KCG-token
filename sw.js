@@ -1,4 +1,4 @@
-const CACHE = "tcg-token-v28";
+const CACHE = "tcg-token-v29";
 const ASSETS = [
   "./",
   "./index.html",
@@ -7,7 +7,6 @@ const ASSETS = [
   "./manifest.webmanifest",
   "./fonts/orbitron-700.woff2",
   "./fonts/mplus1p-700-subset.woff2",
-  "./icons/icon.svg",
   "./icons/icon-192.png",
   "./icons/icon-512.png",
 ];
