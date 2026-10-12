@@ -1,5 +1,5 @@
 {
-  "name": "神椿TCG トークン管理",
+  "name": "神椿TCG非公式トークン管理アプリ",
   "short_name": "トークン管理",
   "start_url": "./index.html",
   "scope": "./",

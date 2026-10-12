@@ -1,4 +1,4 @@
-const CACHE = "tcg-token-v27";
+const CACHE = "tcg-token-v28";
 const ASSETS = [
   "./",
   "./index.html",

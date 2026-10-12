@@ -1,11 +1,15 @@
 このアプリは次のフォントを同梱しています(いずれも SIL Open Font License 1.1)。
-各ライセンス全文は同じフォルダのファイルを参照してください。
+各ライセンス全文は、同じフォルダの OFL-*.txt を参照してください。
 
 - Orbitron (fonts/orbitron-700.woff2)
   Copyright 2018 The Orbitron Project Authors (https://github.com/theleagueof/orbitron)
   ライセンス: OFL-Orbitron.txt
+  入手元: Fontsource (@fontsource/orbitron 5.3.0、ラテン文字サブセットの Bold) の配布ファイルを、
+  加工せずそのまま同梱しています(Fontsource 配布物と同一であることをハッシュ値で確認済み)。
 
 - M PLUS 1p (fonts/mplus1p-700-subset.woff2)
   Copyright 2016 The M+ Project Authors
-  使用文字だけを抜き出したサブセット版です。
   ライセンス: OFL-MPLUS1p.txt
+  入手元: Google Fonts リポジトリ (https://github.com/google/fonts/tree/main/ofl/mplus1p) の
+  MPLUS1p-Bold.ttf から、このアプリで使う文字だけを抜き出して woff2 形式に変換した改変版です。
+  なお、この改変版は、アプリ内では「M PLUS 1p Subset」という名前で指定しています。
