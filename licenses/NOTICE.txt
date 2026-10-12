@@ -1,0 +1,11 @@
+このアプリは次のフォントを同梱しています(いずれも SIL Open Font License 1.1)。
+各ライセンス全文は同じフォルダのファイルを参照してください。
+
+- Orbitron (fonts/orbitron-700.woff2)
+  Copyright 2018 The Orbitron Project Authors (https://github.com/theleagueof/orbitron)
+  ライセンス: OFL-Orbitron.txt
+
+- M PLUS 1p (fonts/mplus1p-700-subset.woff2)
+  Copyright 2016 The M+ Project Authors
+  使用文字だけを抜き出したサブセット版です。
+  ライセンス: OFL-MPLUS1p.txt
