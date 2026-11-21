@@ -247,7 +247,14 @@
   // 1 画面に収める: 端末の文字の高さや画面の大きさの違いで中身が下にはみ出す場合、はみ出さなくなるまでトークンを小さくする
   const appEl = document.getElementById("app");
   // まずボタン類の高さを少しずつ下げ、それでも収まらなければ余白を詰め(tight)、トークンを小さくする(小さくしても高さが減らなくなったら止める)
-  const over = () => appEl.scrollHeight - appEl.clientHeight;
+  // はみ出し量 = 最後の枠の下端 − (#app の下端 − 下の余白)。
+  // Safari は scrollHeight に下の余白を含めないため、scrollHeight ではなく実際の位置で測る
+  const over = () => {
+    const last = appEl.lastElementChild;
+    if (!last) return 0;
+    const limit = appEl.getBoundingClientRect().bottom - parseFloat(getComputedStyle(appEl).paddingBottom);
+    return Math.ceil(last.getBoundingClientRect().bottom - limit);
+  };
   // iOS のホーム画面起動では、表示領域が画面より短く(下端がホームバーより上で切れ)、その下はページから描けない。
   // その場合は表示領域の下端がすでにホームバーを避けているので、下の安全領域ぶんの余白を取らない
   // 実機では、ページの高さ(innerHeight)よりさらに上で切れることがある(見える下端 = 画面の高さ − 上の安全領域)。
@@ -276,7 +283,7 @@
   document.querySelector(".title").addEventListener("click", () => {
     const now = Date.now();
     titleTaps = titleTaps.filter((x) => now - x < 2000).concat(now);
-    if (titleTaps.length >= 5) { titleTaps = []; fit(); alert(`${viewInfo}\napp ${appEl.clientHeight} / 中身 ${appEl.scrollHeight} / tight ${appEl.classList.contains("tight")}`); }
+    if (titleTaps.length >= 5) { titleTaps = []; fit(); alert(`${viewInfo}\napp ${appEl.clientHeight} / はみ出し ${over()} / ダイス枠の下端 ${Math.round(appEl.lastElementChild.getBoundingClientRect().bottom)} / tight ${appEl.classList.contains("tight")}`); }
   });
   function fit() {
     fixGap();
