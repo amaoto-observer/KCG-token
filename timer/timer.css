@@ -211,5 +211,6 @@
 #app.tight .dice-btns .btn { min-height: 42px; }
 
 /* iOS のホーム画面起動で表示領域が画面より短いとき(timer.js が short-vp を付ける): 下端はすでにホームバーより上なので下の余白を取らない */
-:root.short-vp body { padding-bottom: 0; }
+:root.short-vp body { padding-bottom: 0; bottom: auto; height: var(--app-h, 100%); } /* 実際に見える高さに合わせる */
 :root.short-vp .full-in { padding-bottom: 10px; }
+:root.short-vp .full { bottom: auto; height: var(--app-h, 100%); }

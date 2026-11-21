@@ -248,17 +248,36 @@
   const appEl = document.getElementById("app");
   // まずボタン類の高さを少しずつ下げ、それでも収まらなければ余白を詰め(tight)、トークンを小さくする(小さくしても高さが減らなくなったら止める)
   const over = () => appEl.scrollHeight - appEl.clientHeight;
-  // iOS のホーム画面起動では、ページの表示領域が画面より短く(下端がホームバーより上で切れ)、その下はページから描けない。
+  // iOS のホーム画面起動では、表示領域が画面より短く(下端がホームバーより上で切れ)、その下はページから描けない。
   // その場合は表示領域の下端がすでにホームバーを避けているので、下の安全領域ぶんの余白を取らない
+  // 実機では、ページの高さ(innerHeight)よりさらに上で切れることがある(見える下端 = 画面の高さ − 上の安全領域)。
+  // そのため見える高さは両者の小さいほうとし、ページ全体の高さをそれに合わせる
+  const safeProbe = document.createElement("div");
+  safeProbe.style.cssText = "position:fixed;top:0;left:0;width:0;height:env(safe-area-inset-top);visibility:hidden;pointer-events:none";
+  document.body.append(safeProbe);
+  let viewInfo = "";
   function fixGap() {
+    const root = document.documentElement;
     const standalone = navigator.standalone === true || matchMedia("(display-mode: standalone)").matches;
     const portrait = window.innerHeight > window.innerWidth;
     const gap = standalone && portrait ? screen.height - window.innerHeight : 0;
-    document.documentElement.classList.toggle("short-vp", gap >= 20);
-    // ボタンの高さなどの基準にする「画面の高さの 1%」を、実際に表示できる高さから決める
-    document.documentElement.style.setProperty("--vh", window.innerHeight / 100 + "px");
-    document.documentElement.style.setProperty("--vh-full", window.innerHeight / 100 + "px");
+    const short = gap >= 20;
+    const safeTop = safeProbe.offsetHeight;
+    const visH = short ? Math.min(window.innerHeight, screen.height - safeTop) : window.innerHeight;
+    root.classList.toggle("short-vp", short);
+    if (short) root.style.setProperty("--app-h", visH + "px"); else root.style.removeProperty("--app-h");
+    // ボタンの高さなどの基準にする「画面の高さの 1%」を、実際に見える高さから決める
+    root.style.setProperty("--vh", visH / 100 + "px");
+    root.style.setProperty("--vh-full", visH / 100 + "px");
+    viewInfo = `screen ${screen.width}x${screen.height} / inner ${window.innerWidth}x${window.innerHeight} / safeTop ${safeTop} / standalone ${standalone} / 見える高さ ${visH}`;
   }
+  // 確認用: 見出し(KAMITSUBAKI TCG)を素早く 5 回タップすると、画面の高さの測定値を表示する
+  let titleTaps = [];
+  document.querySelector(".title").addEventListener("click", () => {
+    const now = Date.now();
+    titleTaps = titleTaps.filter((x) => now - x < 2000).concat(now);
+    if (titleTaps.length >= 5) { titleTaps = []; fit(); alert(`${viewInfo}\napp ${appEl.clientHeight} / 中身 ${appEl.scrollHeight} / tight ${appEl.classList.contains("tight")}`); }
+  });
   function fit() {
     fixGap();
     appEl.classList.remove("tight");
