@@ -89,8 +89,10 @@
 
 * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
 
-html, body { margin: 0; height: 100%; height: 100dvh; overflow: hidden; overscroll-behavior: none; }
+html, body { margin: 0; height: 100%; overflow: hidden; overscroll-behavior: none; }
+/* ホーム画面から起動したとき、iOS では 100dvh が実際の画面より短くなり下に隙間ができることがあるため、画面全体に固定する */
 body {
+  position: fixed; inset: 0; height: auto;
   background: radial-gradient(120% 80% at 50% 0%, var(--bg-top), var(--bg-bottom) 70%);
   background-color: var(--bg-bottom);
   background-attachment: fixed;

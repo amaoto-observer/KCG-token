@@ -241,4 +241,33 @@
   renderAll();
   setInterval(renderAll, 200);
   document.addEventListener("visibilitychange", () => { if (document.visibilityState === "visible") renderAll(); });
+
+  // 1 画面に収める: 端末の文字の高さや画面の大きさの違いで中身が下にはみ出す場合、はみ出さなくなるまでトークンを小さくする
+  const appEl = document.getElementById("app");
+  // まず余白を詰め(tight)、それでも収まらなければトークンを小さくする(小さくしても高さが減らなくなったら止める)
+  const over = () => appEl.scrollHeight - appEl.clientHeight;
+  function fit() {
+    appEl.classList.remove("tight");
+    appEl.style.removeProperty("--tk");
+    if (over() <= 0) return;
+    appEl.classList.add("tight");
+    const img = appEl.querySelector(".token .img");
+    if (!img) return;
+    let size = Math.floor(img.getBoundingClientRect().width), best = size, bestOver = over();
+    while (bestOver > 0 && size > 32) {
+      size -= 1;
+      appEl.style.setProperty("--tk", size + "px");
+      const o = over();
+      if (o < bestOver) { best = size; bestOver = o; } else if (size < best - 4) break;
+    }
+    appEl.style.setProperty("--tk", best + "px");
+  }
+  let fitTimer = 0;
+  const fitSoon = () => { clearTimeout(fitTimer); fitTimer = setTimeout(fit, 60); };
+  fit();
+  window.addEventListener("resize", fitSoon);
+  window.addEventListener("orientationchange", fitSoon);
+  window.addEventListener("load", fitSoon);
+  if (window.visualViewport) visualViewport.addEventListener("resize", fitSoon);
+  if (document.fonts && document.fonts.ready) document.fonts.ready.then(fitSoon);
 })();

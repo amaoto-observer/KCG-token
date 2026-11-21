@@ -1,4 +1,4 @@
-const CACHE = "tcg-timer-v1";
+const CACHE = "tcg-timer-v2";
 const ASSETS = [
   "./",
   "./index.html",

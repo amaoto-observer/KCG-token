@@ -194,3 +194,16 @@
 /* グリッチ用の複製は演出のときだけ見せる(一時停止中・開始前は出さない) */
 .paused .rays.ghost, .idle .rays.ghost { display: none !important; }
 .idle .now-s span, .idle .now-s .tm-time { color: var(--text-sub); }
+
+/* ---- 画面が低い端末向け: 中身がはみ出すときだけ timer.js が #app に tight を付け、余白と最小の高さを詰める ---- */
+#app > * { flex-shrink: 0; } /* 縮めて中身を隠すのではなく、はみ出しとして検出できるようにする */
+#app.tight { gap: 4px; padding-top: 4px; padding-bottom: 4px; }
+#app.tight #tokens { gap: 4px; }
+#app.tight .panel { padding-top: 4px; padding-bottom: 4px; }
+#app.tight .group-side { gap: 4px; }
+#app.tight .row-reset { min-height: 24px; }
+#app.tight .topbar { --bar-h: 44px; }
+#app.tight .limited { min-height: 40px; }
+#app.tight .tm-pause, #app.tight .d4 .main { min-height: 54px; }
+#app.tight .dice-top { min-height: 44px; margin-bottom: 4px; }
+#app.tight .dice-btns .btn { min-height: 42px; }
