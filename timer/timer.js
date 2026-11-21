@@ -246,7 +246,7 @@
 
   // 1 画面に収める: 端末の文字の高さや画面の大きさの違いで中身が下にはみ出す場合、はみ出さなくなるまでトークンを小さくする
   const appEl = document.getElementById("app");
-  // まず余白を詰め(tight)、それでも収まらなければトークンを小さくする(小さくしても高さが減らなくなったら止める)
+  // まずボタン類の高さを少しずつ下げ、それでも収まらなければ余白を詰め(tight)、トークンを小さくする(小さくしても高さが減らなくなったら止める)
   const over = () => appEl.scrollHeight - appEl.clientHeight;
   // iOS のホーム画面起動では、ページの表示領域が画面より短く(下端がホームバーより上で切れ)、その下はページから描けない。
   // その場合は表示領域の下端がすでにホームバーを避けているので、下の安全領域ぶんの余白を取らない
@@ -255,12 +255,29 @@
     const portrait = window.innerHeight > window.innerWidth;
     const gap = standalone && portrait ? screen.height - window.innerHeight : 0;
     document.documentElement.classList.toggle("short-vp", gap >= 20);
+    // ボタンの高さなどの基準にする「画面の高さの 1%」を、実際に表示できる高さから決める
+    document.documentElement.style.setProperty("--vh", window.innerHeight / 100 + "px");
+    document.documentElement.style.setProperty("--vh-full", window.innerHeight / 100 + "px");
   }
   function fit() {
     fixGap();
     appEl.classList.remove("tight");
     appEl.style.removeProperty("--tk");
     if (over() <= 0) return;
+    // はみ出す分だけ、ボタン類の高さの基準(--vh)をなめらかに下げる(各ボタンは下限で止まる)
+    const root = document.documentElement, full = window.innerHeight / 100;
+    const fitVh = () => {
+      let lo = 3, hi = full;
+      for (let i = 0; i < 10; i++) {
+        const mid = (lo + hi) / 2;
+        root.style.setProperty("--vh", mid + "px");
+        if (over() <= 0) lo = mid; else hi = mid;
+      }
+      root.style.setProperty("--vh", lo + "px");
+    };
+    fitVh();
+    if (over() <= 0) return;
+    // それでも収まらないときだけ、余白を詰め(tight)、トークンを小さくする
     appEl.classList.add("tight");
     const img = appEl.querySelector(".token .img");
     if (!img) return;
@@ -272,6 +289,7 @@
       if (o < bestOver) { best = size; bestOver = o; } else if (size < best - 4) break;
     }
     appEl.style.setProperty("--tk", best + "px");
+    fitVh(); // 詰めて余った高さはボタン類に戻す
   }
   let fitTimer = 0;
   const fitSoon = () => { clearTimeout(fitTimer); fitTimer = setTimeout(fit, 60); };

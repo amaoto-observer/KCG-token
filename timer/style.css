@@ -105,9 +105,9 @@ body {
   padding: env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);
 }
 
-/* 1画面に収める: 高さ(dvh)に応じてトークンの大きさを縮める */
+/* 1画面に収める: 高さ(--vh)に応じてトークンの大きさを縮める */
 #app {
-  --tk: min(calc((100vw - 130px) / 5), 11.5dvh);
+  --tk: min(calc((100vw - 130px) / 5), calc(11.5 * var(--vh-full)));
   max-width: 480px; margin: 0 auto; height: 100%; min-height: 0;
   padding: 8px 10px; display: flex; flex-direction: column; justify-content: space-between; gap: 6px;
 }
@@ -208,7 +208,7 @@ button { font: inherit; color: inherit; cursor: pointer; }
 .title { margin: 0; font-size: 10px; font-weight: 700; color: var(--text-sub); letter-spacing: .04em; text-align: left; white-space: nowrap; }
 
 /* ---- 最上段(カウントダウン | 全てリセット | 元に戻す) ---- */
-.topbar { --bar-h: clamp(48px, 7.5dvh, 64px); display: grid; grid-template-columns: 1fr 2fr 1fr; align-items: center; gap: 8px; }
+.topbar { --bar-h: clamp(44px, calc(7.5 * var(--vh)), 58px); display: grid; grid-template-columns: 1fr 2fr 1fr; align-items: center; gap: 8px; }
 [hidden] { display: none !important; }
 
 .btn {
@@ -257,7 +257,7 @@ button { font: inherit; color: inherit; cursor: pointer; }
 .noise[aria-pressed="true"] .noise-state { background: var(--ember); color: var(--ember-text); }
 
 .limited {
-  position: relative; width: 100%; height: 100%; min-height: clamp(44px, 8dvh, 72px); border: 0;
+  position: relative; width: 100%; height: 100%; min-height: clamp(40px, calc(8 * var(--vh)), 62px); border: 0;
   background: linear-gradient(180deg, var(--lim-a), var(--lim-b));
   box-shadow: inset 0 1px 0 rgba(255, 255, 255, .18), inset 0 0 0 1px var(--lim-edge);
   clip-path: polygon(6% 0, 94% 0, 100% 22%, 100% 78%, 94% 100%, 6% 100%, 0 78%, 0 22%);
@@ -270,7 +270,7 @@ button { font: inherit; color: inherit; cursor: pointer; }
 .limited[aria-pressed="true"] .limited-text { text-decoration: line-through; }
 
 /* ---- ダイス ---- */
-.dice-top { display: flex; align-items: center; justify-content: space-between; gap: 8px; min-height: clamp(46px, 7dvh, 60px); margin-bottom: 6px; }
+.dice-top { display: flex; align-items: center; justify-content: space-between; gap: 8px; min-height: clamp(44px, calc(7 * var(--vh)), 54px); margin-bottom: 6px; }
 .dice-result { display: flex; gap: 6px; }
 .die {
   width: 42px; height: 42px; display: flex; align-items: center; justify-content: center;
@@ -282,7 +282,7 @@ button { font: inherit; color: inherit; cursor: pointer; }
 @keyframes pop { 0% { transform: scale(1.25); } 100% { transform: scale(1); } }
 .dice-total { padding-right: 12px; font-size: 13px; color: var(--text-sub); white-space: nowrap; }
 .dice-btns { display: grid; grid-template-columns: repeat(5, 1fr); gap: 6px; }
-.dice-btns .btn { font-size: 18px; padding: 4px 0; min-height: clamp(46px, 7.5dvh, 70px); }
+.dice-btns .btn { font-size: 18px; padding: 4px 0; min-height: clamp(42px, calc(7.5 * var(--vh)), 58px); }
 
 @media (prefers-reduced-motion: reduce) {
   .die.pop { animation: none; }
