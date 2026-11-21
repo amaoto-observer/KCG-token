@@ -262,7 +262,6 @@
   const safeProbe = document.createElement("div");
   safeProbe.style.cssText = "position:fixed;top:0;left:0;width:0;height:env(safe-area-inset-top);visibility:hidden;pointer-events:none";
   document.body.append(safeProbe);
-  let viewInfo = "";
   function fixGap() {
     const root = document.documentElement;
     const standalone = navigator.standalone === true || matchMedia("(display-mode: standalone)").matches;
@@ -276,15 +275,7 @@
     // ボタンの高さなどの基準にする「画面の高さの 1%」を、実際に見える高さから決める
     root.style.setProperty("--vh", visH / 100 + "px");
     root.style.setProperty("--vh-full", visH / 100 + "px");
-    viewInfo = `screen ${screen.width}x${screen.height} / inner ${window.innerWidth}x${window.innerHeight} / safeTop ${safeTop} / standalone ${standalone} / 見える高さ ${visH}`;
   }
-  // 確認用: 見出し(KAMITSUBAKI TCG)を素早く 5 回タップすると、画面の高さの測定値を表示する
-  let titleTaps = [];
-  document.querySelector(".title").addEventListener("click", () => {
-    const now = Date.now();
-    titleTaps = titleTaps.filter((x) => now - x < 2000).concat(now);
-    if (titleTaps.length >= 5) { titleTaps = []; fit(); alert(`${viewInfo}\napp ${appEl.clientHeight} / はみ出し ${over()} / ダイス枠の下端 ${Math.round(appEl.lastElementChild.getBoundingClientRect().bottom)} / tight ${appEl.classList.contains("tight")}`); }
-  });
   function fit() {
     fixGap();
     appEl.classList.remove("tight");
