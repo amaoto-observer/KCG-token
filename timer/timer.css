@@ -207,3 +207,7 @@
 #app.tight .tm-pause, #app.tight .d4 .main { min-height: 54px; }
 #app.tight .dice-top { min-height: 44px; margin-bottom: 4px; }
 #app.tight .dice-btns .btn { min-height: 42px; }
+
+/* iOS のホーム画面起動で表示領域が画面より短いとき(timer.js が short-vp を付ける): 下端はすでにホームバーより上なので下の余白を取らない */
+:root.short-vp body { padding-bottom: 0; }
+:root.short-vp .full-in { padding-bottom: 10px; }

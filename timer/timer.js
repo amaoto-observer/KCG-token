@@ -246,7 +246,16 @@
   const appEl = document.getElementById("app");
   // まず余白を詰め(tight)、それでも収まらなければトークンを小さくする(小さくしても高さが減らなくなったら止める)
   const over = () => appEl.scrollHeight - appEl.clientHeight;
+  // iOS のホーム画面起動では、ページの表示領域が画面より短く(下端がホームバーより上で切れ)、その下はページから描けない。
+  // その場合は表示領域の下端がすでにホームバーを避けているので、下の安全領域ぶんの余白を取らない
+  function fixGap() {
+    const standalone = navigator.standalone === true || matchMedia("(display-mode: standalone)").matches;
+    const portrait = window.innerHeight > window.innerWidth;
+    const gap = standalone && portrait ? screen.height - window.innerHeight : 0;
+    document.documentElement.classList.toggle("short-vp", gap >= 20);
+  }
   function fit() {
+    fixGap();
     appEl.classList.remove("tight");
     appEl.style.removeProperty("--tk");
     if (over() <= 0) return;

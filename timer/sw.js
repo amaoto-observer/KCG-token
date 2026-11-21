@@ -1,4 +1,4 @@
-const CACHE = "tcg-timer-v2";
+const CACHE = "tcg-timer-v3";
 const ASSETS = [
   "./",
   "./index.html",
@@ -28,10 +28,11 @@ self.addEventListener("activate", (e) => {
 });
 
 // ネットワーク優先 + 失敗時キャッシュ(通信できるときは常に最新を表示、圏外ではキャッシュで動作)
+// ブラウザの HTTP キャッシュに古いファイルが残っていても使わないよう、毎回サーバーに確認する(cache: "no-cache")
 self.addEventListener("fetch", (e) => {
   if (e.request.method !== "GET") return;
   e.respondWith(
-    fetch(e.request)
+    (e.request.mode === "navigate" ? fetch(e.request.url, { cache: "no-cache" }) : fetch(e.request, { cache: "no-cache" }))
       .then((res) => {
         if (res.ok) { const copy = res.clone(); caches.open(CACHE).then((c) => c.put(e.request, copy)); }
         return res;
