@@ -97,7 +97,7 @@
     setTime($("tmCur"), curMs());
   }
 
-  // 交代・再開のときだけの演出(ダーク: グリッチ→尾が伸びる / ブライト: 花びらが舞い降りる)
+  // 開始・交代・再開のときだけの演出(ダーク: グリッチ→尾が伸びる / ブライト: 花びらが舞い降りる)
   function playFx() {
     main.classList.remove("fx-play");
     void main.offsetWidth;
@@ -108,6 +108,8 @@
     const now = Date.now();
     if (t.status === "idle") {
       t = { status: "running", startedAt: now, side: 1, n: 1, laps: [], acc: 0, since: now };
+      playFx();
+      navigator.vibrate?.(15);
     } else if (t.status === "running") {
       t.laps.push({ side: t.side, n: t.n, ms: curMs() });
       if (t.side === 1) t.side = 2; else { t.side = 1; t.n++; }
@@ -279,4 +281,10 @@
   window.addEventListener("load", fitSoon);
   if (window.visualViewport) visualViewport.addEventListener("resize", fitSoon);
   if (document.fonts && document.fonts.ready) document.fonts.ready.then(fitSoon);
+  // ホーム画面から起動した直後は画面の高さが一時的に違う値になり、resize が来ないことがあるため、大きさが変わったら測り直す
+  let sizeKey = "";
+  setInterval(() => {
+    const k = `${window.innerWidth}x${window.innerHeight}x${appEl.clientHeight}`;
+    if (k !== sizeKey) { sizeKey = k; fit(); }
+  }, 500);
 })();

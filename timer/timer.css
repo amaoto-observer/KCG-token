@@ -211,3 +211,9 @@
 /* iOS のホーム画面起動で表示領域が画面より短いとき(timer.js が short-vp を付ける): 下端はすでにホームバーより上なので下の余白を取らない */
 :root.short-vp body { padding-bottom: 0; }
 :root.short-vp .full-in { padding-bottom: 10px; }
+
+/* ---- 余った高さは枠の間を広げるのではなく、下側のボタンを大きくするのに使う(大きくなりすぎないよう上限あり) ---- */
+#app > .mid { flex-grow: 1; max-height: 84px; }
+#app > #timerBar { flex-grow: 1; max-height: 96px; }
+#app > #dice { flex-grow: 2; max-height: 210px; display: flex; flex-direction: column; }
+#dice .dice-btns { flex: 1; }
